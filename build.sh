@@ -22,52 +22,50 @@ yellow='\033[0;33m'
 red='\033[0;31m'
 nocol='\033[0m'
 
-echo "**** Setting Toolchain ****"
+echo "// Setting Toolchain //"
 export CROSS_COMPILE=$KERNEL_TOOLCHAIN
 export ARCH=arm64
 export SUBARCH=arm64
-export KBUILD_COMPILER_STRING="Clang Version 9.0.4"
 
 # Clean build always lol
-echo "**** Cleaning ****"
-mkdir -p out
-make O=out clean
+echo "// Cleaning //"
+make clean && make mrproper && rm -rf out/
 
 echo "**** Kernel defconfig is set to $KERNEL_DEFCONFIG ****"
 echo -e "$blue***********************************************"
-echo "          BUILDING KERNEL          "
+echo "          BUILDING MJÖLNIR KERNEL          "
 echo -e "***********************************************$nocol"
 make $KERNEL_DEFCONFIG O=out
-make -j$(nproc --all) CC=$CLANG_TOOLCHAIN CLANG_TRIPLE=aarch64-linux-gnu- O=out
+make -j8 CC=$CLANG_TOOLCHAIN CLANG_TRIPLE=aarch64-linux-gnu- O=out
 
 echo -e "$blue***********************************************"
 echo "          GENERATING DT.img          "
 echo -e "***********************************************$nocol"
 $DTBTOOL/dtbToolCM -2 -o $KERNEL_DIR/out/arch/arm64/boot/dtb -s 2048 -p $KERNEL_DIR/out/scripts/dtc/ $KERNEL_DIR/out/arch/arm64/boot/dts/qcom/
 
-echo "**** Verify Image.gz & dtb ****"
+echo "// Verify Image.gz & dtb //"
 ls $KERNEL_DIR/out/arch/arm64/boot/Image.gz
 ls $KERNEL_DIR/out/arch/arm64/boot/dtb
 
 #Anykernel 2 time!!
-echo "**** Verifying AnyKERNEL3 Directory ****"
+echo "// Verifying AnyKERNEL3 Directory //"
 ls $ANY_KERNEL3_DIR
-echo "**** Removing leftovers ****"
+echo "// Removing leftovers //"
 rm -rf $ANY_KERNEL3_DIR/dtb
 rm -rf $ANY_KERNEL3_DIR/Image.gz
 rm -rf $ANY_KERNEL3_DIR/$FINAL_KERNEL_ZIP
 
-echo "**** Copying Image.gz ****"
+echo "// Copying Image.gz //"
 cp $KERNEL_DIR/out/arch/arm64/boot/Image.gz $ANY_KERNEL3_DIR/
-echo "**** Copying dtb ****"
+echo "// Copying dtb //"
 cp $KERNEL_DIR/out/arch/arm64/boot/dtb $ANY_KERNEL3_DIR/
 
-echo "**** Time to zip up! ****"
+echo "// Time to zip up! //"
 cd $ANY_KERNEL3_DIR/
 zip -r9 $FINAL_KERNEL_ZIP * -x README $FINAL_KERNEL_ZIP
 cp $KERNEL_DIR/AnyKernel3/$FINAL_KERNEL_ZIP /home/ultra/MjolnirKernels/$FINAL_KERNEL_ZIP
 
-echo "**** Good Bye!! ****"
+echo "// Good Bye!! //"
 cd $KERNEL_DIR
 rm -rf arch/arm64/boot/dtb
 rm -rf $ANY_KERNEL3_DIR/$FINAL_KERNEL_ZIP
