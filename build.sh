@@ -2,6 +2,49 @@
 #Abort on Errors
 set -e
 
+echo "/// Checking for gcc, clang and out folder ///"
+echo " "
+
+if [ -e /home/ultra/prebuilts/gcc ]
+then
+   echo "** You already have gcc cloned **"
+   echo " "
+   echo " "
+else
+   echo "Cloning gcc"
+   git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 /home/ultra/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9
+   echo " "
+   echo "Cloned gcc"
+   echo " "
+   echo " "
+fi
+
+if [ -e /home/ultra/prebuilts/clang ]
+then
+   echo "** You already have clang cloned **"
+   echo " "
+   echo " "
+else
+   echo "Cloning clang"
+   git clone https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-5696680 clang
+   echo " "
+   echo "Cloned clang"
+   echo " "
+   echo " "
+fi
+
+if [ -e /home/ultra/MjolnirKernels ]
+then
+   echo "** MjolnirKernels folder exists **"
+   echo " "
+   echo " "
+else
+   mkdir /home/ultra/MjolnirKernels
+   echo "** MjolnirKernels folder not exists. Created **"
+   echo " "
+   echo " "
+fi
+
 DATE_POSTFIX=$(date +"%Y%m%d%H%M%S")
 
 ## Copy this script inside the kernel directory
@@ -11,7 +54,9 @@ CLANG_TOOLCHAIN=/home/ultra/prebuilts/clang/bin/clang-9
 KERNEL_DEFCONFIG=sanders_defconfig
 DTBTOOL=$KERNEL_DIR/Dtbtool/
 ANY_KERNEL3_DIR=$KERNEL_DIR/AnyKernel3/
-FINAL_KERNEL_ZIP=Mjölnir-Kernel-$DATE_POSTFIX.zip
+KERNEL=Mjölnir-Kernel
+TYPE=HMP
+FINAL_KERNEL_ZIP=$KERNEL-$TYPE-$DATE_POSTFIX.zip
 # Speed up build process
 MAKE="./makeparallel"
 
