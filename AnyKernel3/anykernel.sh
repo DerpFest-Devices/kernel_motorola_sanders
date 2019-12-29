@@ -6,7 +6,7 @@
 properties() { '
 kernel.string=Mjölnir Kernel by Mayur
 do.devicecheck=1
-do.modules=0
+do.modules=1
 do.cleanup=1
 do.cleanuponabort=0
 device.name1=sanders
@@ -33,7 +33,7 @@ dump_boot;
 
 backup_file init.rc;
 
-insert_line init.rc "init.mad.rc" after "import /init.usb.configfs.rc" "import /init.mad.rc";
+insert_line init.rc "init.mjolnir.rc" after "import /init.usb.configfs.rc" "import /init.mjolnir.rc";
 
 # end ramdisk changes
 
