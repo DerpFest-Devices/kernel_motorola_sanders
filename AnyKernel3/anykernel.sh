@@ -33,7 +33,7 @@ dump_boot;
 
 backup_file init.rc;
 
-insert_line init.rc "init.mjolnir.rc" after "import /init.usb.configfs.rc" "import /init.mjolnir.rc";
+insert_line init.rc "import /init.mjolnir.rc" after "import /init.usb.configfs.rc" "import /init.mjolnir.rc";
 
 # end ramdisk changes
 
