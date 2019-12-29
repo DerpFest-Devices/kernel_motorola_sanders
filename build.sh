@@ -56,6 +56,7 @@ DTBTOOL=$KERNEL_DIR/Dtbtool/
 ANY_KERNEL3_DIR=$KERNEL_DIR/AnyKernel3/
 KERNEL=Mjölnir-Kernel
 TYPE=HMP
+ZIP_DIR=$KERNEL_DIR/AnyKernel3
 FINAL_KERNEL_ZIP=$KERNEL-$TYPE-$DATE_POSTFIX.zip
 # Speed up build process
 MAKE="./makeparallel"
@@ -104,6 +105,9 @@ echo "// Copying Image.gz //"
 cp $KERNEL_DIR/out/arch/arm64/boot/Image.gz $ANY_KERNEL3_DIR/
 echo "// Copying dtb //"
 cp $KERNEL_DIR/out/arch/arm64/boot/dtb $ANY_KERNEL3_DIR/
+echo "// Copying modules //"
+mkdir -p AnyKernel3/modules/vendor/lib/modules
+[ -e "$KERNEL_DIR/out/drivers/misc/moto-dtv-fc8300/isdbt.ko" ] && cp $KERNEL_DIR/out/drivers/misc/moto-dtv-fc8300/isdbt.ko $ZIP_DIR/modules/vendor/lib/modules || echo "DTV module not found..."
 
 echo "// Time to zip up! //"
 cd $ANY_KERNEL3_DIR/
@@ -117,6 +121,8 @@ rm -rf $ANY_KERNEL3_DIR/$FINAL_KERNEL_ZIP
 rm -rf AnyKernel3/Image.gz
 rm -rf AnyKernel3/dtb
 rm -rf $KERNEL_DIR/out/
+rm -rf AnyKernel3/modules/vendor/lib/modules/*.ko
+rm -rf AnyKernel3/modules/vendor/lib/modules
 echo "MjolnirKernels/($FINAL_KERNEL_ZIP)"
 echo "Goobye"
 
