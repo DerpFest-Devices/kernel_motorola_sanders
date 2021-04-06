@@ -1,4 +1,4 @@
-CONFIG_LOCALVERSION="-Mello-Oof-Ultra-Pro-Max-Super-Duper-Plus"
+CONFIG_LOCALVERSION="-Mello-Oof-Ultra-Pro-Max-Super-Duper-Plus-v0.69"
 # CONFIG_USELIB is not set
 CONFIG_AUDIT=y
 CONFIG_NO_HZ=y
